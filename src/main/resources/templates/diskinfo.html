@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Disk Scaner</title>
+        <link rel="stylesheet" th:href="@{/styles.css}" />
+    </head>
+    <body>
+        <div th:fragment="diskresult" th:unless="${status.isEmpty()}" id="diskresultblock">
+            <table border="1" class="table table-bordered table-hover">
+                <tr th:each="fi : ${status}">
+                    <td th:text="${fi.drive}">Drive name</td>
+                    <td>
+                        <a th:if="${fi.makelink}" th:href="@{'diskinfo?name=' + ${fi.drive}}" th:text="${fi.status}"></a>
+                        <span th:if="${!fi.makelink}" th:text="${fi.status}"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

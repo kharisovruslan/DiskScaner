@@ -1,0 +1,112 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package vd.DiskScaner.Files;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.util.DigestUtils;
+import vd.DiskScaner.ConfigProperties;
+
+/**
+ *
+ * @author Kharisov Ruslan
+ */
+@Component
+@Scope("prototype")
+public class FindFiles {
+
+    private Logger log = LoggerFactory.getLogger(FindFiles.class);
+
+    @Autowired
+    private ApplicationContext context;
+
+    private FileInfo root;
+
+    @Autowired
+    private ConfigProperties config;
+
+    public FindFiles() {
+    }
+
+    private String getFileSha(String filename) {
+        if (config.isCalcShaForFiles()) {
+            String sha = "";
+            try (FileInputStream fis = new FileInputStream(filename)) {
+                sha = DigestUtils.md5DigestAsHex(fis);
+            } catch (FileNotFoundException ex) {
+                log.error(ex.getMessage() + " file: " + filename, ex);
+            } catch (IOException ex) {
+                log.error(ex.getMessage() + " file: " + filename, ex);
+            }
+            return sha;
+        }
+        return "";
+    }
+
+    private void listFiles(FileInfo parent) {
+        File fpath = new File(parent.getAbsolutePath());
+        File[] filelist = fpath.listFiles();
+        if (filelist == null) {
+            log.error("Error find in path " + parent);
+            config.addExceptionsFiles(fpath.getAbsolutePath());
+            return;
+        }
+        for (File f : filelist) {
+            String filename = "";
+            FileInfo fi = null;
+            try {
+                filename = f.getAbsolutePath();
+                BasicFileAttributes a = Files.readAttributes(Paths.get(filename), BasicFileAttributes.class);
+                fi = context.getBean(FileInfo.class, parent, f.getName(), a.isDirectory(), a.size(),
+                        a.lastAccessTime().toMillis(), a.creationTime().toMillis(),
+                        a.lastModifiedTime().toMillis(), (!a.isDirectory()) ? getFileSha(filename) : "");
+                if (f.isDirectory()) {
+                    fi = context.getBean(FileInfo.class, parent, f.getName(), a.lastAccessTime().toMillis(), a.creationTime().toMillis(),
+                            a.lastModifiedTime().toMillis());
+                    listFiles(fi);
+                }
+                parent.getFiles().add(fi);
+            } catch (IOException ex) {
+                log.error(ex.getMessage() + " file: " + filename, ex);
+            }
+        }
+    }
+
+    public List<String> getDisks() {
+        File lroot[] = File.listRoots();
+        List<String> r = new ArrayList<>();
+        for (File f : lroot) {
+            String sd = f.getAbsolutePath();
+            sd = sd.substring(0, 2);
+            r.add(sd);
+        }
+        return r;
+    }
+
+    public FileInfo startwithdisk(String drive) {
+        root = context.getBean(FileInfo.class, drive);
+        listFiles(root);
+        return root;
+    }
+
+    @Override
+    public String toString() {
+        return "FindFiles{" + "root=" + root + '}';
+    }
+}

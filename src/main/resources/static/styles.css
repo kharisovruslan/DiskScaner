@@ -1,0 +1,79 @@
+div.ingredient-group:nth-child(odd) {
+	float: left;
+	padding-right: 20px;
+}
+
+div.ingredient-group:nth-child(even) {
+    float: left;
+	padding-right: 0;
+}
+
+div.ingredient-group {
+	width: 50%;
+}
+
+.linkButton { 
+     background: none;
+     border: none;
+     color: #0066ff;
+     text-decoration: underline;
+     cursor: pointer; 
+}
+
+.grid:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+span.error {
+	color: red;
+}
+
+.NewFiles {
+    color: green;
+    background-color: bisque;
+}
+.DeleteFiles {
+    color: brown;
+    background-color: beige;
+}
+.RenameFiles {
+    color: darkblue;
+    background-color: aliceblue;
+}
+.ChangeFiles {
+    color: chocolate;
+    background-color: azure;
+}
+.DefaultFiles {
+    color: black;
+    background-color: white;
+}
+
+.ExecutableNewFiles {
+    color: tomato;
+    background-color: bisque;
+}
+.ExecutableDeleteFiles {
+    color: violet;
+    background-color: beige;
+}
+.ExecutableRenameFiles {
+    color: brown;
+    background-color: aliceblue;
+}
+.ExecutableChangeFiles {
+    color: red;
+    background-color: azure;
+}
+.ExecutableDefaultFiles {
+    color: crimson;
+    background-color: white;
+}

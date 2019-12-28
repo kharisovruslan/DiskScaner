@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Disk Scaner</title>
+        <link rel="stylesheet" th:href="@{/styles.css}" />
+        <link rel="stylesheet" th:href="@{/bootstrap.css}" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Scan disks</h1>
+            <div class="row">
+                <div class="col-md-2"><a class="btn btn-info" href="update">Update</a></div>
+                <div class="col-md-2"><a class="btn btn-danger" id="idclose" href="#">Exit</a></div>
+                <div class="w-100"></div>
+            </div>
+
+            <div id="resultsBlock">
+            </div>
+
+            <script type="text/javascript" src="jquery-3.4.1.js"></script>
+            <script type="text/javascript" src="bootstrap.js"></script>
+            <script type="text/javascript" src="closeapplication.js"></script>
+            <script type="text/javascript">
+                function retrieveStatus() {
+                    var url = 'status';
+                    $("#resultsBlock").load(url);
+                }
+                document.getElementById("idclose").addEventListener("click", CloseAndExit);
+                window.onload = retrieveStatus();
+                setInterval(retrieveStatus, 1500);
+            </script>
+        </div>
+    </body>
+</html>

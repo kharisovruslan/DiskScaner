@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Disk Scaner</title>
+        <link rel="stylesheet" th:href="@{/styles.css}" />
+        <link rel="stylesheet" th:href="@{/bootstrap.css}" />
+    </head>
+    <body>
+        <header>
+            <a href="/">Choose disk</a><br/>
+            <a href="update">Update</a><br/>
+            <a href="close" onclick="CloseAndExit();">Exit</a><br/>
+        </header>
+        <div class="container-fluid">
+            <h1 th:text="@{'Drive ' + ${drive}}"></h1>
+            <table border="1" width="100%" class="table table-bordered table-hover">
+                <tr>
+                    <th width="59%">File name</th>
+                    <th width="25%">Info</th>
+                    <th width="9%">Size</th>
+                    <th width="19%">Date</th>
+                </tr>
+                <tr th:each="fi : ${changes}" th:class="${fi.getStyle()}">
+                    <td th:text="${fi.getFileName()}"></td>
+                    <td th:text="${fi.getDescription()}"></td>
+                    <td th:text="${fi.getSize()}"></td>
+                    <td th:text="${fi.getDate()}"></td>
+                </tr>
+            </table>
+        </div>
+        <script type="text/javascript" src="jquery-3.4.1.js"></script>
+        <script type="text/javascript" src="bootstrap.js"></script>
+    </body>
+</html>

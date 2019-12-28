@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Disk Scaner</title>
+        <link rel="stylesheet" th:href="@{/styles.css}" />
+        <link rel="stylesheet" th:href="@{/bootstrap.css}" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Choose disks</h1>
+            <form action="result" method="POST">
+                <ul th:each="disk : ${disks}">
+                    <li>
+                        <input type="checkbox" name="disks" th:value="${disk}" th:text="${disk}" checked="checked"/>
+                    </li>
+                </ul>
+                <input type="submit" value="OK"/>
+            </form>
+        </div>
+        <script type="text/javascript" src="jquery-3.4.1.js"></script>
+        <script type="text/javascript" src="bootstrap.js"></script>
+    </body>
+</html>
