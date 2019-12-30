@@ -37,11 +37,13 @@ public class DiskScanerApplication {
                 e.printStackTrace();
             }
         } else {
-            Runtime runtime = Runtime.getRuntime();
-            try {
-                runtime.exec("rundll32 url.dll,FileProtocolHandler " + url);
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+                Runtime runtime = Runtime.getRuntime();
+                try {
+                    runtime.exec("rundll32 url.dll,FileProtocolHandler " + url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

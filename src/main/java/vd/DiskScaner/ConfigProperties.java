@@ -1,6 +1,9 @@
 package vd.DiskScaner;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -46,6 +49,14 @@ public class ConfigProperties {
     }
 
     public String getPathdata() {
+        if (!Files.exists(Paths.get(pathdata))) {
+            try {
+                Files.createDirectory(Paths.get(pathdata));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                return System.getProperty("user.home");
+            }
+        }
         return pathdata;
     }
 

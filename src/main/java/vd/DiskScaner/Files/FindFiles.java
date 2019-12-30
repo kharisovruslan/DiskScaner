@@ -13,7 +13,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +43,14 @@ public class FindFiles {
     @Autowired
     private ConfigProperties config;
 
+    private Set<String> exceptionsDirectory = new HashSet<>();
+
     public FindFiles() {
+        String OS = System.getProperty("os.name").toLowerCase();
+        if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0) {
+            exceptionsDirectory.add("//sys");
+            exceptionsDirectory.add("//proc");
+        }
     }
 
     private String getFileSha(String filename) {
@@ -60,10 +69,18 @@ public class FindFiles {
     }
 
     private void listFiles(FileInfo parent) {
-        File fpath = new File(parent.getAbsolutePath());
+        String findpath = parent.getAbsolutePath();
+        if (!exceptionsDirectory.isEmpty()) {
+            for (String ed : exceptionsDirectory) {
+                if (findpath.startsWith(ed)) {
+                    return;
+                }
+            }
+        }
+        File fpath = new File(findpath);
         File[] filelist = fpath.listFiles();
         if (filelist == null) {
-            log.error("Error find in path " + parent);
+            log.info("Error find in path " + parent);
             config.addExceptionsFiles(fpath.getAbsolutePath());
             return;
         }
@@ -93,7 +110,9 @@ public class FindFiles {
         List<String> r = new ArrayList<>();
         for (File f : lroot) {
             String sd = f.getAbsolutePath();
-            sd = sd.substring(0, 2);
+            if (sd.length() > 2) {
+                sd = sd.substring(0, 2);
+            }
             r.add(sd);
         }
         return r;
