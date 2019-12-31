@@ -8,18 +8,27 @@
     </head>
     <body>
         <header>
-            <a href="/">Choose disk</a><br/>
-            <a href="update">Update</a><br/>
-            <a href="close" onclick="CloseAndExit();">Exit</a><br/>
+            <div class="row">
+                <div class="col-md-2">
+                    <a class="btn btn-primary btn-block" href="/">Choose disk</a><br/>
+                </div>
+                <div class="col-md-1">
+                    <a class="btn btn-primary btn-block" href="update">Update</a><br/>
+                </div>
+                <div class="col-md-1">
+                    <a class="btn btn-primary btn-block" href="close" onclick="CloseAndExit();">Exit</a><br/>
+                </div>
+                <div class="W-100"></div>
+            </div>
         </header>
         <div class="container-fluid">
             <h1 th:text="@{'Drive ' + ${drive}}"></h1>
             <table border="1" width="100%" class="table table-bordered table-hover">
                 <tr>
-                    <th width="59%">File name</th>
-                    <th width="25%">Info</th>
-                    <th width="9%">Size</th>
-                    <th width="19%">Date</th>
+                    <th width="40%">File name</th>
+                    <th width="30%">Info</th>
+                    <th width="10%">Size</th>
+                    <th width="20%">Date</th>
                 </tr>
                 <tr th:each="fi : ${changes}" th:class="${fi.getStyle()}">
                     <td th:text="${fi.getFileName()}"></td>
