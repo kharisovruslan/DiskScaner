@@ -30,3 +30,7 @@ build/
 ### VS Code ###
 .vscode/
 /nbproject/
+
+### my settings ###
+nbactions.xml
+application.properties
