@@ -81,7 +81,11 @@ public class FileInfo {
         FileInfo item = this;
         while (item.getParent() != null) {
             item = item.getParent();
-            pathname = item.getName() + File.separator + pathname;
+            if (item.getName().endsWith(File.separator)) {
+                pathname = item.getName() + pathname;
+            } else {
+                pathname = item.getName() + File.separator + pathname;
+            }
         }
         if (pathname.length() == 2) {
             if (pathname.charAt(1) == ':') {

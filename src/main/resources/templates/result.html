@@ -22,13 +22,23 @@
             <script type="text/javascript" src="bootstrap.js"></script>
             <script type="text/javascript" src="closeapplication.js"></script>
             <script type="text/javascript">
+                var idtimer = setInterval(retrieveStatus, 900);
+                var responsetext = "";
                 function retrieveStatus() {
                     var url = 'status';
-                    $("#resultsBlock").load(url);
+                    $.ajax({url: url, success: function (data) {
+                            if (!data.includes('scan')) {
+                                clearInterval(idtimer);
+                            }
+                            if (responsetext != data) {
+                                $("#resultsBlock").html(data);
+                                responsetext = data;
+                            }
+                        }
+                    });
                 }
                 document.getElementById("idclose").addEventListener("click", CloseAndExit);
                 window.onload = retrieveStatus();
-                setInterval(retrieveStatus, 1500);
             </script>
         </div>
     </body>

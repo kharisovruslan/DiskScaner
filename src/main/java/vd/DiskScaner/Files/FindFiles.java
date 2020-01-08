@@ -109,11 +109,10 @@ public class FindFiles {
         File lroot[] = File.listRoots();
         List<String> r = new ArrayList<>();
         for (File f : lroot) {
-            String sd = f.getAbsolutePath();
-            if (sd.length() > 2) {
-                sd = sd.substring(0, 2);
+            if (f.exists()) {
+                String sd = f.getAbsolutePath();
+                r.add(sd);
             }
-            r.add(sd);
         }
         return r;
     }
