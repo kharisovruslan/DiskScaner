@@ -48,8 +48,8 @@ public class FindFiles {
     public FindFiles() {
         String OS = System.getProperty("os.name").toLowerCase();
         if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0) {
-            exceptionsDirectory.add("//sys");
-            exceptionsDirectory.add("//proc");
+            exceptionsDirectory.add("/sys");
+            exceptionsDirectory.add("/proc");
         }
     }
 
