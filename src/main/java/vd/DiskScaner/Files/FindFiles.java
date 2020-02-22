@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
@@ -100,6 +101,8 @@ public class FindFiles {
                 }
                 parent.getFiles().add(fi);
             } catch (IOException ex) {
+                log.info(ex.getMessage() + " file: " + filename, ex);
+            } catch (InvalidPathException ex) {
                 log.error(ex.getMessage() + " file: " + filename, ex);
             }
         }
