@@ -6,7 +6,6 @@
 package vd.DiskScaner.Files;
 
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.LoggerFactory;
@@ -42,7 +41,7 @@ public class DiskScaner {
         FindFiles ff = context.getBean(FindFiles.class);
         FilesStorage storage = context.getBean(FilesStorage.class);
         FilesCompare comparator = context.getBean(FilesCompare.class);
-        Set<String> exeptionsFiles = storage.loadExceptionsFilesList();
+//        Set<String> exeptionsFiles = storage.loadExceptionsFilesList();
         FileInfo scan = ff.startwithdisk(drive);
         FileInfo load = storage.load(drive);
         DriveFilesChangeInfo drivechangeinfo = new DriveFilesChangeInfo(drive.substring(0, 1));
@@ -60,7 +59,7 @@ public class DiskScaner {
             drivechangeinfo.setMakelink(true);
         }
         storage.save(scan, drive);
-        storage.saveExceptionsFilesList(exeptionsFiles);
+//        storage.saveExceptionsFilesList(exeptionsFiles);
         drivechangeinfo.setComplete(true);
         return new AsyncResult<DriveFilesChangeInfo>(drivechangeinfo);
     }
